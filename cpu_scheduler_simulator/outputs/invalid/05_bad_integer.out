@@ -1,0 +1,15 @@
+Error: Line 2: expected integer for burst, got 'three'
+
+CPU Scheduler Simulator
+
+Usage:
+  /Users/araj/prep/projects/cpu_scheduler_simulator/build/cpu_scheduler_simulator [--input file.csv] [--policy all|fcfs|sjf|priority|rr] [--quantum N]
+
+CSV format:
+  id,arrival,burst,priority,deadline
+
+Notes:
+  - SJF and Priority Scheduling are non-preemptive in this simulator.
+  - Smaller priority number means higher priority.
+  - A process misses its deadline if completion_time > deadline.
+  - If --input is omitted, a built-in sample workload is used.

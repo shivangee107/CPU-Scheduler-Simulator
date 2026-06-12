@@ -1,0 +1,164 @@
+CPU Scheduler Simulator
+Simulating FCFS, SJF, Priority Scheduling, and Round Robin.
+Round Robin quantum: 3
+
+==================== INPUT WORKLOAD ====================
+Priority convention: smaller number = higher priority
+Deadline rule: missed if completion_time > deadline
+
+Process      Arrival     Burst  Priority  Deadline
+--------------------------------------------------
+P1                 0         6         3        30
+P2                 1         4         2        30
+P3                 2         4         1        30
+P4                 3         2         4        30
+
+
+========================================================
+FCFS - First Come First Served
+========================================================
+Non-preemptive. Among available processes, run the earliest arriving process first. Ties use input order.
+
+Execution timeline:
+  [ 0,  6)  P1
+  [ 6, 10)  P2
+  [10, 14)  P3
+  [14, 16)  P4
+
+Compact Gantt view:
+  |0 P1 |6 P2 |10 P3 |14 P4 |16
+
+Per-process results:
+Process        Arr   Burst    Prio  Deadline  FirstStart    Finish   Waiting  Turnaround  Response   Missed
+-----------------------------------------------------------------------------------------------------------
+P1               0       6       3        30           0         6         0           6         0       no
+P2               1       4       2        30           6        10         5           9         5       no
+P3               2       4       1        30          10        14         8          12         8       no
+P4               3       2       4        30          14        16        11          13        11       no
+
+Summary metrics:
+  Makespan              : 16
+  Total busy time       : 16
+  CPU utilization       : 100.00%
+  Throughput            : 0.25 processes/unit-time
+  Average waiting time  : 6.00
+  Average turnaround    : 10.00
+  Average response time : 6.00
+  Deadline misses       : 0 / 4
+
+
+========================================================
+SJF - Shortest Job First
+========================================================
+Non-preemptive. Whenever the CPU becomes free, run the available process with the smallest burst time.
+
+Execution timeline:
+  [ 0,  6)  P1
+  [ 6,  8)  P4
+  [ 8, 12)  P2
+  [12, 16)  P3
+
+Compact Gantt view:
+  |0 P1 |6 P4 |8 P2 |12 P3 |16
+
+Per-process results:
+Process        Arr   Burst    Prio  Deadline  FirstStart    Finish   Waiting  Turnaround  Response   Missed
+-----------------------------------------------------------------------------------------------------------
+P1               0       6       3        30           0         6         0           6         0       no
+P2               1       4       2        30           8        12         7          11         7       no
+P3               2       4       1        30          12        16        10          14        10       no
+P4               3       2       4        30           6         8         3           5         3       no
+
+Summary metrics:
+  Makespan              : 16
+  Total busy time       : 16
+  CPU utilization       : 100.00%
+  Throughput            : 0.25 processes/unit-time
+  Average waiting time  : 5.00
+  Average turnaround    : 9.00
+  Average response time : 5.00
+  Deadline misses       : 0 / 4
+
+
+========================================================
+Priority Scheduling
+========================================================
+Non-preemptive. Whenever the CPU becomes free, run the available process with the highest priority. Smaller priority number means higher priority.
+
+Execution timeline:
+  [ 0,  6)  P1
+  [ 6, 10)  P3
+  [10, 14)  P2
+  [14, 16)  P4
+
+Compact Gantt view:
+  |0 P1 |6 P3 |10 P2 |14 P4 |16
+
+Per-process results:
+Process        Arr   Burst    Prio  Deadline  FirstStart    Finish   Waiting  Turnaround  Response   Missed
+-----------------------------------------------------------------------------------------------------------
+P1               0       6       3        30           0         6         0           6         0       no
+P2               1       4       2        30          10        14         9          13         9       no
+P3               2       4       1        30           6        10         4           8         4       no
+P4               3       2       4        30          14        16        11          13        11       no
+
+Summary metrics:
+  Makespan              : 16
+  Total busy time       : 16
+  CPU utilization       : 100.00%
+  Throughput            : 0.25 processes/unit-time
+  Average waiting time  : 6.00
+  Average turnaround    : 10.00
+  Average response time : 6.00
+  Deadline misses       : 0 / 4
+
+
+========================================================
+Round Robin
+========================================================
+Preemptive. Each ready process gets at most quantum=3 time units per turn. Arrivals at a time-slice boundary are queued before the preempted process.
+
+Execution timeline:
+  [ 0,  3)  P1
+  [ 3,  6)  P2
+  [ 6,  9)  P3
+  [ 9, 11)  P4
+  [11, 14)  P1
+  [14, 15)  P2
+  [15, 16)  P3
+
+Compact Gantt view:
+  |0 P1 |3 P2 |6 P3 |9 P4 |11 P1 |14 P2 |15 P3 |16
+
+Per-process results:
+Process        Arr   Burst    Prio  Deadline  FirstStart    Finish   Waiting  Turnaround  Response   Missed
+-----------------------------------------------------------------------------------------------------------
+P1               0       6       3        30           0        14         8          14         0       no
+P2               1       4       2        30           3        15        10          14         2       no
+P3               2       4       1        30           6        16        10          14         4       no
+P4               3       2       4        30           9        11         6           8         6       no
+
+Summary metrics:
+  Makespan              : 16
+  Total busy time       : 16
+  CPU utilization       : 100.00%
+  Throughput            : 0.25 processes/unit-time
+  Average waiting time  : 8.50
+  Average turnaround    : 12.50
+  Average response time : 3.00
+  Deadline misses       : 0 / 4
+
+
+==================== POLICY COMPARISON ====================
+Policy                              Avg Wait  Avg Turnaround      Avg Resp    Misses      Util %
+------------------------------------------------------------------------------------------------
+FCFS - First Come First Served          6.00           10.00          6.00         0      100.00
+SJF - Shortest Job First                5.00            9.00          5.00         0      100.00
+Priority Scheduling                     6.00           10.00          6.00         0      100.00
+Round Robin                             8.50           12.50          3.00         0      100.00
+
+Interpretation hints:
+  - Lower waiting/turnaround time is usually better for batch-style workloads.
+  - Lower response time is important for interactive workloads.
+  - Round Robin often improves response time, but can increase turnaround time.
+  - Deadline misses show whether a policy is suitable for time-bound workloads.

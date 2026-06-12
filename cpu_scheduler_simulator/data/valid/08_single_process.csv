@@ -1,0 +1,2 @@
+id,arrival,burst,priority,deadline
+P1,5,3,1,10

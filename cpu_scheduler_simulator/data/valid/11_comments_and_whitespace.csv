@@ -1,0 +1,7 @@
+# Comments and whitespace should be ignored by the CSV loader.
+id, arrival, burst, priority, deadline
+
+ P1 , 0 , 3 , 2 , 10
+ P2 , 2 , 2 , 1 , 8
+# Another comment
+ P3 , 4 , 1 , 3 , 12
