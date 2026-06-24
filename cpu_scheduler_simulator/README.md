@@ -201,28 +201,3 @@ Fields:
 # All policies with custom workload
 ./cpu_scheduler_simulator --input ../data/sample_processes.csv --quantum 4
 ```
-
-## Interview discussion points
-
-This project is useful in interviews because it lets you discuss:
-
-- non-preemptive vs preemptive scheduling
-- ready queue management
-- deterministic tie-breaking
-- waiting time vs response time vs turnaround time
-- why Round Robin helps interactivity
-- why SJF often reduces average waiting time
-- why Priority Scheduling can cause starvation
-- how deadlines can be missed despite high CPU utilization
-- how a real OS scheduler is more complex than these textbook policies
-
-## Possible extensions
-
-Good follow-up extensions:
-
-1. Add preemptive SJF / Shortest Remaining Time First.
-2. Add aging to Priority Scheduling to reduce starvation.
-3. Add context-switch cost to Round Robin.
-4. Add multi-core scheduling.
-5. Add IO blocking and process states.
-6. Export results as CSV.
